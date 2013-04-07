@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>/r/Denver Survey</title>
+        <meta charset="utf-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+        <!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
+        <link rel="stylesheet" href="./survey.css" />
+    </head>
+    <body>
+        <h1>/r/Denver Survey</h1>
+
+
+        <!-- Other Questions -->
+        <div id ="survey" class="span8">
+            <!-- Leaflet Map Area -->
+            <div class="questionBox">
+                <h4>Click your location on the map</h4>
+                <div id="map" style="width: 95%; height: 400px"></div>
+            </div>
+        </div>
+
+        <!-- Other Questions -->
+        <div id ="submit" class="span8" style = "clear:both;"
+            onclick="submitButton();"></div>
+
+
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+        <script src="./customLeaflet.js"></script>
+        <script src="./customSurvey.js"></script>
+        <script src="./createSurvey.js"></script>
+
+        <!-- Modal Window-->
+        <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel"></h3>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal"
+                    id="modalButton"></button>
+            </div>
+        </div>
+    </body>
+</html>

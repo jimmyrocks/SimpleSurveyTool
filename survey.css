@@ -1,0 +1,219 @@
+.questionBox {
+    border: 3px;
+    border-style: solid;
+    margin-top: 15px;
+    padding: 1px 15px 10px 40px;
+    border-radius: 50px;
+}
+
+.questionBox:hover {
+    background-color: #F00;
+}
+
+.textInput {
+    width: 90%;
+}
+
+.btn-custom {
+    background-color: hsl(110, 56%, 0%) !important;
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#398f28", endColorstr="#193f11");
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#398f28), to(#193f11));
+    background-image: -moz-linear-gradient(top, #398f28, #193f11);
+    background-image: -ms-linear-gradient(top, #398f28, #193f11);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #398f28), color-stop(100%, #193f11));
+    background-image: -webkit-linear-gradient(top, #398f28, #193f11);
+    background-image: -o-linear-gradient(top, #398f28, #193f11);
+    background-image: linear-gradient(#398f28, #193f11);
+    border-color: #193f11 #193f11 hsl(110, 56%, 11%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.33);
+    -webkit-font-smoothing: antialiased;
+}
+
+.btn-xlarge {
+    margin: 20px 0px 10px 25px;
+    padding: 18px 28px;
+    font-size: 32px;
+    width: 100%;
+    line-height: normal;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+/* Spinner */
+#spinningSquaresG{
+    position:relative;
+    width:180px;
+    height:22px}
+
+.spinningSquaresG{
+    position:absolute;
+    top:0;
+    background-color:#519916;
+    width:22px;
+    height:22px;
+    -moz-animation-name:bounce_spinningSquaresG;
+    -moz-animation-duration:0.7s;
+    -moz-animation-iteration-count:infinite;
+    -moz-animation-direction:linear;
+    -moz-transform:scale(.3);
+    -webkit-animation-name:bounce_spinningSquaresG;
+    -webkit-animation-duration:0.7s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-direction:linear;
+    -webkit-transform:scale(.3);
+    -ms-animation-name:bounce_spinningSquaresG;
+    -ms-animation-duration:0.7s;
+    -ms-animation-iteration-count:infinite;
+    -ms-animation-direction:linear;
+    -ms-transform:scale(.3);
+    -o-animation-name:bounce_spinningSquaresG;
+    -o-animation-duration:0.7s;
+    -o-animation-iteration-count:infinite;
+    -o-animation-direction:linear;
+    -o-transform:scale(.3);
+    animation-name:bounce_spinningSquaresG;
+    animation-duration:0.7s;
+    animation-iteration-count:infinite;
+    animation-direction:linear;
+    transform:scale(.3);
+}
+
+#spinningSquaresG_1{
+    left:0;
+    -moz-animation-delay:0.28s;
+    -webkit-animation-delay:0.28s;
+    -ms-animation-delay:0.28s;
+    -o-animation-delay:0.28s;
+    animation-delay:0.28s;
+}
+
+#spinningSquaresG_2{
+    left:23px;
+    -moz-animation-delay:0.35s;
+    -webkit-animation-delay:0.35s;
+    -ms-animation-delay:0.35s;
+    -o-animation-delay:0.35s;
+    animation-delay:0.35s;
+}
+
+#spinningSquaresG_3{
+    left:45px;
+    -moz-animation-delay:0.42s;
+    -webkit-animation-delay:0.42s;
+    -ms-animation-delay:0.42s;
+    -o-animation-delay:0.42s;
+    animation-delay:0.42s;
+}
+
+#spinningSquaresG_4{
+    left:68px;
+    -moz-animation-delay:0.49s;
+    -webkit-animation-delay:0.49s;
+    -ms-animation-delay:0.49s;
+    -o-animation-delay:0.49s;
+    animation-delay:0.49s;
+}
+
+#spinningSquaresG_5{
+    left:90px;
+    -moz-animation-delay:0.56s;
+    -webkit-animation-delay:0.56s;
+    -ms-animation-delay:0.56s;
+    -o-animation-delay:0.56s;
+    animation-delay:0.56s;
+}
+
+#spinningSquaresG_6{
+    left:113px;
+    -moz-animation-delay:0.63s;
+    -webkit-animation-delay:0.63s;
+    -ms-animation-delay:0.63s;
+    -o-animation-delay:0.63s;
+    animation-delay:0.63s;
+}
+
+#spinningSquaresG_7{
+    left:135px;
+    -moz-animation-delay:0.7s;
+    -webkit-animation-delay:0.7s;
+    -ms-animation-delay:0.7s;
+    -o-animation-delay:0.7s;
+    animation-delay:0.7s;
+}
+
+#spinningSquaresG_8{
+    left:158px;
+    -moz-animation-delay:0.77s;
+    -webkit-animation-delay:0.77s;
+    -ms-animation-delay:0.77s;
+    -o-animation-delay:0.77s;
+    animation-delay:0.77s;
+}
+
+@-moz-keyframes bounce_spinningSquaresG{
+    0%{
+        -moz-transform:scale(1);
+        background-color:#519916;
+}
+
+100%{
+    -moz-transform:scale(.3) rotate(90deg);
+    background-color:#0088FF;
+}
+
+}
+
+@-webkit-keyframes bounce_spinningSquaresG{
+    0%{
+        -webkit-transform:scale(1);
+        background-color:#519916;
+}
+
+100%{
+    -webkit-transform:scale(.3) rotate(90deg);
+    background-color:#0088FF;
+}
+
+}
+
+@-ms-keyframes bounce_spinningSquaresG{
+    0%{
+        -ms-transform:scale(1);
+        background-color:#519916;
+}
+
+100%{
+    -ms-transform:scale(.3) rotate(90deg);
+    background-color:#0088FF;
+}
+
+}
+
+@-o-keyframes bounce_spinningSquaresG{
+    0%{
+        -o-transform:scale(1);
+        background-color:#519916;
+}
+
+100%{
+    -o-transform:scale(.3) rotate(90deg);
+    background-color:#0088FF;
+}
+
+}
+
+@keyframes bounce_spinningSquaresG{
+    0%{
+        transform:scale(1);
+        background-color:#519916;
+}
+
+100%{
+    transform:scale(.3) rotate(90deg);
+    background-color:#0088FF;
+}
+
+}
