@@ -184,7 +184,7 @@ var surveyJson = [
         placeholder: ""
     },{
         name: "otherReddits",
-        question: "What other subreddits do you follow? (seperate with a semicolon)",
+        question: "What other subreddits do you follow? (separated with a semicolon)",
         input: "text",
         placeholder: ""
     },{
@@ -199,12 +199,12 @@ var surveyJson = [
         placeholder: ""
     },{
         name: "Hometown",
-        question: "What city/town would you consider your 'Hometown'?",
+        question: "What city/town would you consider to be your 'Hometown'?",
         input: "text",
         placeholder: ""
     },{
         name: "places_lived",
-        question: "List all the places you've lived? (sperated them with a semi-colon)",
+        question: "List all the places you've lived? (separated them with a semicolon)",
         input: "text",
         placeholder: ""
     },{
@@ -254,7 +254,7 @@ var surveyJson = [
             },{
                 type: "button",
                 "class": "btn btn-primary",
-                "value": "Associates"
+                "value": "Associate"
             },{
                 type: "button",
                 "class": "btn btn-primary",
@@ -262,7 +262,7 @@ var surveyJson = [
             },{
                 type: "button",
                 "class": "btn btn-primary",
-                "value": "Masters"
+                "value": "Master"
             },{
                 type: "button",
                 "class": "btn btn-primary",
@@ -301,7 +301,7 @@ var surveyJson = [
                 type: "button",
                 "class": "btn btn-primary",
                 "value": "Homemaker"
-            },
+            }
         ]
     },{
         name: "travelDistance",
@@ -351,7 +351,7 @@ var surveyJson = [
             },{
                 type: "button",
                 "class": "btn btn-primary",
-                "value": "waste management"
+                "value": "Waste management"
             },{
                 type: "button",
                 "class": "btn btn-primary",
@@ -579,7 +579,7 @@ var surveyJson = [
             },{
                 type: "button",
                 "class": "btn btn-primary",
-                "value": "If I truely think they're need"
+                "value": "If I truly think they're need"
             },{
                 type: "button",
                 "class": "btn btn-primary",
