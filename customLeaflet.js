@@ -42,7 +42,7 @@ function onMapClick(e) {
     $("#latBox").attr("value", e.latlng.lat);
     $("#lonBox").attr("value", e.latlng.lng);
     //Add Pin
-    if (marker) {map.removeLayer(marker)};
+    if (marker) {map.removeLayer(marker);}
     marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map).bindPopup('Your Location is: <ul><li>Lat: ' + e.latlng.lat + '</li><li>Lng: ' + e.latlng.lng + '</li></ul>').openPopup();
 }
 map.on('click', onMapClick);
@@ -53,5 +53,6 @@ latBox.setAttribute("id", "latBox");
 var lonBox = document.createElement("input");
 lonBox.setAttribute("type", "hidden");
 lonBox.setAttribute("id", "lonBox");
-$("body").append(latBox);
-$("body").append(lonBox);
+$("body")
+    .append(latBox)
+    .append(lonBox);
