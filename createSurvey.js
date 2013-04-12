@@ -38,7 +38,7 @@ var createQuestionDiv = function(question){
         var split = 5;
         var widthSum = 0;
         for (var buttonId in question.divbuttons) {
-            if (question.hasOwnProperty(buttonId)) {
+            if (question.divbuttons.hasOwnProperty(buttonId)) {
                 counter += 1;
                 var buttonJson = question.divbuttons[buttonId];
                 var button = document.createElement(buttonJson.type);
