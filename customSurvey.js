@@ -6,7 +6,7 @@ var surveyJson = [
         placeholder: ""
     },{
         name: "Gender",
-        question: "What gender dare you?",
+        question: "What gender are you?",
         input: "divclass",
         divclass: "btn-group",
         divtoggle: "buttons-radio",
@@ -355,7 +355,7 @@ var surveyJson = [
             },{
                 type: "button",
                 "class": "btn btn-primary",
-                "value": "Scientific, profession, or techincal services"
+                "value": "Scientific, profession, or technical services"
             },{
                 type: "button",
                 "class": "btn btn-primary",

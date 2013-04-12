@@ -16,7 +16,7 @@ Files
 
 Usage
 -----
-*This is a little tricky since boostrap is included as a submodule*
+*This is a little tricky since Bootstrap is included as a submodule*
 
 * git clone _this repo_
 * git submodule init
