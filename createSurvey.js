@@ -34,27 +34,25 @@ var createQuestionDiv = function(question){
         inputs.setAttribute('class', question.divclass);
         inputs.setAttribute('data-toggle', question.divtoggle);
 
-        var counter = 0;
-        var split = 5;
         var widthSum = 0;
+        var textWidth = ($("body").width()-100) / 15;
+        console.log(textWidth);
         for (var buttonId in question.divbuttons) {
             if (question.divbuttons.hasOwnProperty(buttonId)) {
-                counter += 1;
                 var buttonJson = question.divbuttons[buttonId];
                 var button = document.createElement(buttonJson.type);
                 button.setAttribute('id', question.name);
                 var btn_class = buttonJson.class;
                 btn_class = btn_class.replace("btn-primary","");
-                    btn_class += buttonTheme;
+                btn_class += buttonTheme;
                 button.setAttribute('class', btn_class);
                 button.textContent = buttonJson.value;
-                inputs.appendChild(button);
                 widthSum += button.textContent.length;
-                if (counter % split  === 0 || widthSum > 50) {
+                if (widthSum > textWidth) {
                     widthSum = 0;
-                    counter = 0;
                     inputs.appendChild(document.createElement("br"));
                 }
+                inputs.appendChild(button);
             }
         }
     } else if (question.input === "text") {
