@@ -56,18 +56,75 @@ var createQuestionDiv = function(question){
             }
         }
     } else if (question.input === "text") {
-        var inputField = document.createElement("input");
-        inputField.setAttribute("type", question.input);
-        inputField.setAttribute("class", "textInput");
-        inputField.setAttribute("placeholder", question.placeholder);
-        inputField.setAttribute('id', question.name);
-        inputs.appendChild(inputField);
+        if (question.multi) {
+            multiBoxes(inputs, 1, question.input, question.placeholder, question.name);
+        } else {
+            createInputField(question.input, question.placeholder, question.name, inputs);
+        }
     }
 
     questionDiv.appendChild(header);
     questionDiv.appendChild(inputs);
 
     return questionDiv;
+};
+
+var createInputField = function(type, placeholder, idName, parentDiv, textValue) {
+    textValue = textValue ? textValue : "";
+    var inputField = document.createElement("input");
+    inputField.setAttribute("type", type);
+    inputField.setAttribute("class", "textInput");
+    inputField.setAttribute("placeholder", placeholder);
+    inputField.setAttribute("value", textValue);
+    inputField.setAttribute('id', idName);
+    parentDiv.appendChild(inputField);
+};
+
+var multiBoxes = function(outerDiv, inputs, inputType, placeholder, name) {
+    //TODO Add more to this part!
+    var textField = document.createElement("div");
+    var upperLimit = 5;
+    var lowerLimit = 1;
+    var displayText = [];
+
+    // Specify range for inputs
+    inputs = inputs < lowerLimit ? lowerLimit : inputs;
+    inputs = inputs > upperLimit ? upperLimit : inputs;
+
+    // Save any text that was in the fields
+
+    $(".textInput" + "#" + name).each(function(index){
+        displayText.push($(this).val());
+    });
+
+    for (var i = 0; i < inputs; i++) {
+        var thisValue = "";
+        if (displayText && displayText[i]) {
+            thisValue = displayText[i];
+        }
+        createInputField(inputType, placeholder, name, textField, thisValue);
+    }
+
+    // Buttons
+    if (inputs < upperLimit) {
+        var addItem = document.createElement("button");
+        addItem.textContent = "+";
+        addItem.setAttribute('class', "btn-success");
+        addItem.setAttribute('id', name + "_add");
+        addItem.onclick = function() {multiBoxes(outerDiv, (inputs+1), inputType, placeholder, name)};
+        textField.appendChild(addItem);
+    }
+    if (inputs > lowerLimit) {
+        var removeItem = document.createElement("button");
+        removeItem.textContent = "-";
+        removeItem.setAttribute('class', "btn-danger");
+        removeItem.setAttribute('id', name + "_remove");
+        removeItem.onclick = function() {multiBoxes(outerDiv, (inputs-1), inputType, placeholder, name)};
+        textField.appendChild(removeItem);
+    }
+
+    outerDiv.innerHTML = "";
+    outerDiv.appendChild(textField);
 };
 
 var list = function() {

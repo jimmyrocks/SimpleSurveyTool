@@ -25,6 +25,7 @@ attribution: "Data, imagery and map information provided by MapQuest, Open Stree
 };
 
 baseMaps["OpenStreetMap"].addTo(map);
+map.invalidateSize(false);
 
 
 // Overlay maps

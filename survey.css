@@ -14,6 +14,11 @@
     width: 90%;
 }
 
+.full {
+    margin-right:20px;
+    margin-left:20px;
+}
+
 .btn-custom {
     background-color: hsl(110, 56%, 0%) !important;
     background-repeat: repeat-x;

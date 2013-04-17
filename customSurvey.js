@@ -184,9 +184,10 @@ var surveyJson = [
         placeholder: ""
     },{
         name: "otherReddits",
-        question: "What other subreddits do you follow? (separated with a semicolon)",
+        question: "What other subreddits do you follow?",
         input: "text",
-        placeholder: ""
+        placeholder: "",
+        multi: "True"
     },{
         name: "YearsInColorado",
         question: "How many years have you lived in Colorado?",
@@ -204,9 +205,10 @@ var surveyJson = [
         placeholder: ""
     },{
         name: "places_lived",
-        question: "List all the places you've lived? (separated them with a semicolon)",
+        question: "List all the places you've lived?",
         input: "text",
-        placeholder: ""
+        placeholder: "",
+        multi: "True"
     },{
         name: "HighSchool",
         question: "In what city/town did/will you attend High School? (if you attended more than one, put the most interesting one down",
