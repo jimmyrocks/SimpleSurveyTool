@@ -12,7 +12,11 @@ $(document).ready(function(){
         submitButton.setAttribute('class', 'btn btn-primary btn-xlarge');
         submitButton.textContent = "Submit";
         $("#submit").append(submitButton);
-        });
+});
+
+var survey = function(surveyDivId, submitDivId) {
+
+};
 
 
 var createQuestionDiv = function(question){
