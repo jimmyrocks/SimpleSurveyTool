@@ -17,8 +17,63 @@ $(document).ready(function(){
                 thisSurvey.submit();
             });
 
+            // Update the maps
+            $(".leaflet_Map").each(function () {
+                loadMap(
+                    this.id,
+                    {
+                        lat: $(this).data("lat"),
+                        lon: $(this).data("lon"),
+                        zoom: $(this).data("zoom")
+                    },
+                    $(this).data("lat_field"),
+                    $(this).data("lon_field")
+                );
+            });
+
         });
 });
+
+var loadMap = function(mapDiv, position, latField, lonField) {
+    // Define the tile services
+    var baseMaps = {
+        "OpenStreetMap" : L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: "Map data © OpenStreetMap contributors"
+            }),
+        "MapQuest Streets":  L.tileLayer(
+            'http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                subdomains: '1234',
+                attribution: "Data, imagery and map information provided by MapQuest, Open Street Map <http://www.openstreetmap.org/> and contributors, CC-BY-SA <http://creativecommons.org/licenses/by-sa/2.0/> ."
+            }),
+        "MapQuest Aerial":  L.tileLayer(
+            'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+                maxZoom: 18,
+                subdomains: '1234',
+                attribution: "Data, imagery and map information provided by MapQuest, Open Street Map <http://www.openstreetmap.org/> and contributors, CC-BY-SA <http://creativecommons.org/licenses/by-sa/2.0/> ."
+            })
+    };
+
+    // Create the map
+    var map = L.map(mapDiv).setView([position.lat, position.lon], position.zoom);
+    map.invalidateSize(false);
+    baseMaps["OpenStreetMap"].addTo(map);
+    L.control.layers(baseMaps).addTo(map);
+
+    var marker;
+    // Click function
+    function onMapClick(e) {
+        // Add the value to the hidden boxes
+        $("#" + latField).attr("value", e.latlng.lat);
+        $("#" + lonField).attr("value", e.latlng.lng);
+        //Add Pin
+        if (marker) {map.removeLayer(marker);}
+        marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map).bindPopup('Your Selected Location is: <ul><li>Lat: ' + e.latlng.lat + '</li><li>Lng: ' + e.latlng.lng + '</li></ul>').openPopup();
+    }
+    map.on('click', onMapClick);
+};
 
 var survey = function(surveyJsonLink) {
     var surveyJson = {};
@@ -77,7 +132,7 @@ var survey = function(surveyJsonLink) {
                 {
                     'name': question.name,
                     'id': question.name,
-                    'class': "questionBox",
+                    'class': "questionBox"
                 }
             );
 
@@ -99,6 +154,8 @@ var survey = function(surveyJsonLink) {
                 } else {
                     inputs.appendChild(drawTextbox(question.placeholder, question.name));
                 }
+            } else if (question.input === "map") {
+                inputs.appendChild(drawMapHolder(question.name))
             }
 
             // Add a star to show if it's required
@@ -159,7 +216,7 @@ var survey = function(surveyJsonLink) {
             inputCount = inputCount > upperLimit ? upperLimit : inputCount;
 
             // Save any text that was in the fields
-            $(thisDivReference).each(function(index){
+            $(thisDivReference).each(function(){
                 displayText.push($(this).val());
             });
 
@@ -214,6 +271,52 @@ var survey = function(surveyJsonLink) {
                 },
                 textValue
             );
+        };
+
+        var drawMapHolder = function(idName, position) {
+            //Set the positions
+            position = position ? position : {
+                lat: 39.739,
+                lon: -104.9847,
+                zoom: 12
+            };
+
+            //Create the div to hold the map elements
+            var mapFeature = customElement("div");
+
+            //Create the hidden input boxes
+            mapFeature.appendChild(customElement(
+                "input",
+                {
+                    "type": "hidden",
+                    "id": idName + "_lat"
+                }
+            ));
+            mapFeature.appendChild(customElement(
+                "input",
+                {
+                    "type": "hidden",
+                    "id": idName + "_lon"
+                }
+            ));
+
+            //Create the map holder div
+            mapFeature.appendChild(customElement(
+                "div",
+                {
+                    "class": "leaflet_Map",
+                    "name": idName,
+                    "id": idName + "_leafletMap",
+                    "data-lat": position.lat,
+                    "data-lon": position.lon,
+                    "data-zoom": position.zoom,
+                    "data-lat_field": idName + "_lat",
+                    "data-lon_field": idName + "_lon",
+                    "style": "width: 95%; height: 250px"
+                }
+            ));
+
+            return mapFeature;
         };
 
         var customElement = function(elementType, attributes, content) {
