@@ -3,6 +3,12 @@
     "survey" :
     [
         {
+            "name": "location",
+            "question": "Click your location on the map",
+            "input": "map",
+            "required": false
+        },
+        {
             "name": "username",
             "question": "What is your reddit username?",
             "input": "text",
