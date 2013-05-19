@@ -10,6 +10,10 @@
     background-color: #F00;
 }
 
+#footer {
+    height: 10px;
+}
+
 .required {
     color: #FF0;
     text-shadow:
@@ -46,9 +50,10 @@
 }
 
 .btn-xlarge {
-    margin: 20px 0px 10px 25px;
+    margin: 10px 0px 10px 10px;
     padding: 18px 28px;
-    font-size: 32px;
+    font-size: 32pt !important;
+    height: 100px;
     width: 100%;
     line-height: normal;
     -webkit-border-radius: 8px;

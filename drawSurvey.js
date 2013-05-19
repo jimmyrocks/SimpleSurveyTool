@@ -13,7 +13,6 @@ $(document).ready(function(){
 
             // Update the submit button
             $("#submitButton").click(function(){
-                console.log(thisSurvey);
                 thisSurvey.submit();
             });
 
@@ -30,7 +29,6 @@ $(document).ready(function(){
                     $(this).data("lon_field")
                 );
             });
-
         });
 });
 
@@ -53,6 +51,11 @@ var loadMap = function(mapDiv, position, latField, lonField) {
                 maxZoom: 18,
                 subdomains: '1234',
                 attribution: "Data, imagery and map information provided by MapQuest, Open Street Map <http://www.openstreetmap.org/> and contributors, CC-BY-SA <http://creativecommons.org/licenses/by-sa/2.0/> ."
+            }),
+        "OpenCycleMap": L.tileLayer(
+            'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: "Map data © OpenStreetMap contributors"
             })
     };
 
@@ -289,7 +292,12 @@ var survey = function(surveyJsonLink) {
             };
 
             //Create the div to hold the map elements
-            var mapFeature = customElement("div");
+            var mapFeature = customElement(
+                "div",
+                {
+                    "class": "mapHolder"
+                }
+            );
 
             //Create the hidden input boxes
             mapFeature.appendChild(customElement(
