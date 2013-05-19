@@ -105,7 +105,7 @@ var survey = function(surveyJsonLink) {
                     "button",
                     {
                         'id': 'submitButton',
-                        'class': 'btn btn-primary btn-xlarge'
+                        'class': 'btn btn-success btn-xlarge'
                     },
                     "Submit"
                 ));
@@ -146,21 +146,30 @@ var survey = function(surveyJsonLink) {
             if (question.input === "divclass") {
                 inputs.setAttribute('class', question.divclass);
                 inputs.setAttribute('data-toggle', question.divtoggle);
-                inputs.appendChild(drawButtons(question.divbuttons, question.name));
+                inputs.appendChild(drawButtons(question.divbuttons, question.name, question.required));
 
             } else if (question.input === "text") {
                 if (question.multi) {
-                    inputs.appendChild(drawMultipleTextboxes(1, question.placeholder, question.name));
+                    inputs.appendChild(drawMultipleTextboxes(1, question.placeholder, question.name, question.required));
                 } else {
-                    inputs.appendChild(drawTextbox(question.placeholder, question.name));
+                    inputs.appendChild(drawTextbox(question.placeholder, question.name, null, question.required));
                 }
             } else if (question.input === "map") {
-                inputs.appendChild(drawMapHolder(question.name))
+                inputs.appendChild(drawMapHolder(question.name, null, question.required))
             }
 
             // Add a star to show if it's required
             if (question.required){
-                header.innerHTML += " *";
+                header.appendChild(
+                    customElement(
+                        "span",
+                        {
+                            "class": "required",
+                            "title": "Required Field"
+                        },
+                        " *"
+                    )
+                );
             }
 
             questionDiv.appendChild(header);
@@ -169,7 +178,7 @@ var survey = function(surveyJsonLink) {
             return questionDiv;
         };
 
-        var drawButtons = function (buttons, questionName) {
+        var drawButtons = function (buttons, questionName, required) {
             var widthCharacterSum = 0;
             var maxCharacterWidth = ($("body").width()-100) / 15;
             var buttonsDiv = customElement("div");
@@ -187,7 +196,8 @@ var survey = function(surveyJsonLink) {
                         buttonJson.type,
                         {
                             'id': questionName,
-                            'class': buttonTheme
+                            'class': buttonTheme,
+                            'data-required': required ? true : false
                         },
                         buttonJson.value
                     );
@@ -199,11 +209,8 @@ var survey = function(surveyJsonLink) {
             return buttonsDiv;
         };
 
-        var drawMultipleTextboxes = function(inputCount, placeholder, name) {
+        var drawMultipleTextboxes = function(inputCount, placeholder, name, required) {
             //TODO Add more to this part!
-            console.log("inputCount: " + inputCount);
-            console.log("placeholder: " + placeholder);
-            console.log("name: " + name);
             var textField = customElement("div");
             var upperLimit = 5;
             var lowerLimit = 1;
@@ -225,7 +232,7 @@ var survey = function(surveyJsonLink) {
                 if (displayText && displayText[i]) {
                     thisValue = displayText[i];
                 }
-                textField.appendChild(drawTextbox(placeholder, name, thisValue));
+                textField.appendChild(drawTextbox(placeholder, name, thisValue, required));
             }
 
             // Add / Remove box Buttons
@@ -244,7 +251,6 @@ var survey = function(surveyJsonLink) {
 
                     addRemoveItem.onclick = function() {
                         var newTextBoxes = callingFunction((inputCount+increment), placeholder, name);
-                        console.log(inputCount+increment);
                         textField.innerHTML = "";
                         textField.appendChild(newTextBoxes);
                     };
@@ -258,7 +264,7 @@ var survey = function(surveyJsonLink) {
             return textField;
         };
 
-        var drawTextbox = function(placeholder, idName, textValue) {
+        var drawTextbox = function(placeholder, idName, textValue, required) {
             textValue = textValue ? textValue : "";
             return customElement(
                 "input",
@@ -267,13 +273,14 @@ var survey = function(surveyJsonLink) {
                     "class": "textInput",
                     "placeholder": placeholder,
                     "value": textValue,
-                    'id': idName
+                    'id': idName,
+                    'data-required': required ? true : false
                 },
                 textValue
             );
         };
 
-        var drawMapHolder = function(idName, position) {
+        var drawMapHolder = function(idName, position, required) {
             //Set the positions
             position = position ? position : {
                 lat: 39.739,
@@ -289,14 +296,16 @@ var survey = function(surveyJsonLink) {
                 "input",
                 {
                     "type": "hidden",
-                    "id": idName + "_lat"
+                    "id": idName + "_lat",
+                    "data-required": required ? true : false
                 }
             ));
             mapFeature.appendChild(customElement(
                 "input",
                 {
                     "type": "hidden",
-                    "id": idName + "_lon"
+                    "id": idName + "_lon",
+                    "data-required": required ? true : false
                 }
             ));
 
@@ -319,23 +328,6 @@ var survey = function(surveyJsonLink) {
             return mapFeature;
         };
 
-        var customElement = function(elementType, attributes, content) {
-            // Make the element
-            var newElement = document.createElement(elementType);
-
-            // Deal with the attributes
-            for (var attribute in attributes) {
-                if (attributes.hasOwnProperty(attribute)) {
-                    newElement.setAttribute(attribute, attributes[attribute]);
-                }
-            }
-
-            // Add any content
-            newElement.innerHTML = content ? content : "";
-
-            return newElement;
-        };
-
         return {
             drawSurvey: function(json) {return drawSurvey(json)},
             loadJson: function(jsonLink, successFunction) {loadJson(jsonLink, successFunction)}
@@ -346,10 +338,76 @@ var survey = function(surveyJsonLink) {
 
         var submissionDisplayElements = function() {
 
+            // SUBMISSION WINDOW //
+            // Display Window
+
+            var modalWindow = customElement(
+                "div",
+                {
+                    "id": "modalWindow",
+                    "class": "modal hide fade",
+                    "tabindex": "-1",
+                    "role": "dialog",
+                    "aria-labelledby": "modalLabel",
+                    "aria-hidden": "true"
+                }
+            );
+
+            var modalHeader = customElement(
+                "div",
+                {
+                    "class": "modal-header"
+                }
+            );
+            var modalLabel = customElement(
+                "h3",
+                {
+                    "id": "modalLabel"
+                }
+            );
+            var modalBody = customElement(
+                "div",
+                {
+                    "id": "modalBody",
+                    "style": "margin:20px 20px 10px;}"
+                }
+            );
+            var modalFooter = customElement(
+                "div",
+                {
+                    "class": "modal-footer"
+                }
+            );
+            var modalButton = customElement(
+                "button",
+                {
+                    "id": "modalButton",
+                    "data-dismiss": "modal",
+                    "class": "btn btn-success"
+                }
+            );
+
+            // Assemble the windows
+            modalFooter.appendChild(modalButton);
+            modalHeader.appendChild(modalLabel);
+            modalWindow.appendChild(modalHeader);
+            modalWindow.appendChild(modalBody);
+            modalWindow.appendChild(modalFooter);
+
+            $("body").append(modalWindow);
+
+        }();
+
+        var showModalWindow = function(message, extraMessages) {
+
             // SPINNER //
             var drawSpinner = function(){
-                var spinner = document.createElement("div");
-                spinner.setAttribute('style', 'position: absolute; margin-top: -35px; margin-left: 325px;');
+                var spinner = customElement(
+                    "div",
+                    {
+                        "style": 'position: absolute; margin-top: -35px; margin-left: 325px;'
+                    }
+                );
                 for (var i=1; i<9; i++) {
                     var spinstep = document.createElement("div");
                     spinstep.setAttribute('class', 'spinningSquaresG');
@@ -359,36 +417,68 @@ var survey = function(surveyJsonLink) {
                 return spinner;
             };
 
-            // SUBMISSION WINDOW //
-            // Display Window
-            $('#myModalLabel').text('Submitting Data...');
-            $('#modalBody')
-                .html('<p>Your survey is being submitted to our server!</p>')
-                .append(drawSpinner());
-            $('#modalButton')
-                .text("")
-                .hide();
-            $('button.close').hide();
-            var bgDiv = document.createElement("div");
-            $('body').append(bgDiv);
-            $('#myModal').modal();
+            var fieldFields = "field";
+            if (extraMessages && extraMessages.length > 1) {
+                fieldFields = "fields";
+            }
 
-            // SUBMISSION COMPLETE WINDOW //
-            $( "#modalBody" ).empty().append( 'Data submitted' );
-            $( "#myModalLabel" ).text( 'Done' );
-            $( "#modalButton" )
-                .text( 'All Done! Go back to reddit!' )
-                .on('click', function(){window.location.href = "http://www.reddit.com/r/denver"})
-                .show();
+            var modalMessages = {
+                "submitting": {
+                    "label": "Submitting Data...",
+                    "text": "Your survey is being submitted to our server",
+                    "spinner": "true"
+                },
+                "missing": {
+                    "label": "Required " + fieldFields + " missing.",
+                    "text": "You are missing the following " + fieldFields + ":",
+                    "button": "Let me fix that!"
+                },
+                "completed": {
+                    "label": "Done",
+                    "text": "Data submitted",
+                    "button": "All done!",
+                    "button-action": function(){window.location.href = "http://www.reddit.com/r/denver"}
+                }
+            };
 
-            // MISSING IDENTIFIER WINDOW //
-            $('#myModalLabel').text('Missing Username');
-            $('#modalBody').html("<p>There is only one required field: reddit username.  Please fill it in.</p><i class='icon-spinner icon-spin icon-large'></i>");
-            $('#modalButton').text("I'll fill it in!");
-            $('#myModal').modal();
-            $(identifierDiv).focus();
+            $( "#modalBody" ).empty().append("<p>" + modalMessages[message].text + "</p>");
 
-        }();
+            // Extra messages
+            if (extraMessages) {
+                var extraMessageList = customElement("ul");
+                for (var extraMessage in extraMessages) {
+                    extraMessageList.appendChild(
+                        customElement("li",null,extraMessages[extraMessage])
+                    );
+                }
+                $( "#modalBody").append(extraMessageList.customGetOuterHtml());
+
+            }
+            // Add a spinner
+            if (modalMessages[message]["spinner"]) {
+                $( "#modalBody").append(
+                    drawSpinner().customGetOuterHtml()
+                );
+            }
+
+            $( "#modalLabel" ).text(modalMessages[message].label);
+
+            if (modalMessages[message].button) {
+
+                if (modalMessages[message]["button-action"]) {
+                    $("#modalButton").on('click', modalMessages[message]["button-action"])
+                }
+
+                $("#modalButton")
+                    .text(modalMessages[message].button)
+                    .show();
+            } else {
+                $("#modalButton").hide();
+            }
+
+            // Display the window
+            $("#modalWindow").modal();
+        };
 
         var submissionList = function() {
             var jsonList = [];
@@ -443,13 +533,15 @@ var survey = function(surveyJsonLink) {
             var missingKeys = [];
             var focusField;
 
-            // Make sure they put a username in
+            // Make sure the user enters all required fields
             var identifier = $(identifierDiv).val();
             if (identifierDiv.length > 0) {
                 // Get all the selected buttons
                 $(".btn.active").each(function() {
                     currentList.append(identifier, this.id, this.textContent);
-                    if (this.requiredKey) {requiredKeys.push(this.id);}
+                    if (this.hasAttribute("data-required") && this["data-required"]) {
+                        requiredKeys.push(this.id);
+                    }
                 });
 
                 // Get all the text fields
@@ -458,8 +550,7 @@ var survey = function(surveyJsonLink) {
                         currentList.append(identifier, this.id, this.value);
                     }
 
-                    console.log(this);
-                    if (this.hasOwnProperty("data-required") && this["data-required"]) {
+                    if (this.hasAttribute("data-required") && this.getAttribute("data-required") === "true") {
                         requiredKeys.push(this.id);
                         console.log(this.id);
                     }
@@ -467,24 +558,31 @@ var survey = function(surveyJsonLink) {
 
                 // Check required fields against the currentList
                 for (var key in requiredKeys) {
-                    if (!currentList.hasKey(key)) {
+                    if (!currentList.hasKey(requiredKeys[key])) {
                         // Change the color of the background div
-                        missingKeys.push(key);
-                        if (!focusField) {focusField = key;}
+                        missingKeys.push(requiredKeys[key]);
+                        if (!focusField) {focusField = requiredKeys[key];}
                     }
                 }
                 if (missingKeys.length > 0) {
                     // SHOW A MISSING KEYS ERROR //
                     if (focusField) {
-                        $(focusField).focus();
+                        $("input#" + focusField).focus();
                     }
+                    showModalWindow("missing", missingKeys);
+                } else {
+                    showModalWindow("submitting");
+
+                    /* Send the data using post */
+                    var posting = $.post("submitSurvey.php", {answers: currentList.show()});
+
+                    /* Put the results in a div */
+                    posting.done(function() {
+                        showModalWindow("completed");
+                    });
                 }
 
-            } else
-            {
-                // MISSING IDENTIFIER WINDOW //
             }
-            console.log(currentList.show());
             currentList = null;
         };
 
@@ -505,4 +603,30 @@ var survey = function(surveyJsonLink) {
             surveySubmitTools.submitData();
         }
     };
+};
+
+var customElement = function(elementType, attributes, content) {
+    // Make the element
+    var newElement = document.createElement(elementType);
+
+    // Deal with the attributes
+    for (var attribute in attributes) {
+        if (attributes.hasOwnProperty(attribute)) {
+            newElement.setAttribute(attribute, attributes[attribute]);
+        }
+    }
+
+    // Add any content
+    newElement.innerHTML = content ? content : "";
+
+    // Add a universal outerHTML function
+    var customGetOuterHtml = function() {
+        var outerElement = document.createElement("div");
+        outerElement.appendChild(newElement);
+        return outerElement.innerHTML;
+    };
+
+    newElement.customGetOuterHtml = customGetOuterHtml;
+
+    return newElement;
 };
