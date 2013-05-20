@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
-       var thisSurvey = survey("./customSurvey.js");
-        thisSurvey.load("./customSurvey.js", function(data) {
+       var thisSurvey = survey("./customSurvey.json");
+        thisSurvey.load("./customSurvey.json", function(data) {
             var htmlData = thisSurvey.draw(data);
 
             // Add the page title
@@ -12,9 +12,14 @@ $(document).ready(function(){
             $("#survey").html(htmlData);
 
             // Update the submit button
-            $("#submitButton").click(function(){
-                thisSurvey.submit();
-            });
+            $("#submitButton")
+                .click(function(){
+                    thisSurvey.submit();
+                })
+                .data(
+                    "fwd-url",
+                    data["exitUrl"]
+                );
 
             // Update the maps
             $(".leaflet_Map").each(function () {
@@ -28,6 +33,18 @@ $(document).ready(function(){
                     $(this).data("lat_field"),
                     $(this).data("lon_field")
                 );
+            });
+
+            // Make map resizable
+            $( ".mapHolder" ).parent().parent().resizable({
+                resize: function() {
+                    $(".leaflet_Map").each(function () {
+                        var outerSize = $(this).parent().parent().parent().height();
+                        var diffSize = 40;
+                        $(this).attr("style", "width: 95%; height: " + (outerSize - diffSize) + "px; position: relative;");
+                        $(this).data("mapVar").invalidateSize(false);
+                    });
+                }
             });
         });
 });
@@ -64,6 +81,7 @@ var loadMap = function(mapDiv, position, latField, lonField) {
     map.invalidateSize(false);
     baseMaps["OpenStreetMap"].addTo(map);
     L.control.layers(baseMaps).addTo(map);
+    $("#" + mapDiv).data("mapVar", map);
 
     var marker;
     // Click function
@@ -122,10 +140,7 @@ var survey = function(surveyJsonLink) {
             $.getJSON(newJsonLink, function(data) {
                 surveyJson = data;
                 successFunction(data);
-            })
-                .done(function() { console.log( "second success" ); })
-                .fail(function(e) { console.log( e ); })
-                .always(function() { console.log( "complete" ); });
+            });
         };
 
         var createQuestionDiv = function(question) {
@@ -150,7 +165,6 @@ var survey = function(surveyJsonLink) {
                 inputs.setAttribute('class', question.divclass);
                 inputs.setAttribute('data-toggle', question.divtoggle);
                 inputs.appendChild(drawButtons(question.divbuttons, question.name, question.required));
-
             } else if (question.input === "text") {
                 if (question.multi) {
                     inputs.appendChild(drawMultipleTextboxes(1, question.placeholder, question.name, question.required));
@@ -213,7 +227,6 @@ var survey = function(surveyJsonLink) {
         };
 
         var drawMultipleTextboxes = function(inputCount, placeholder, name, required) {
-            //TODO Add more to this part!
             var textField = customElement("div");
             var upperLimit = 5;
             var lowerLimit = 1;
@@ -445,7 +458,7 @@ var survey = function(surveyJsonLink) {
                     "label": "Done",
                     "text": "Data submitted",
                     "button": "All done!",
-                    "button-action": function(){window.location.href = "http://www.reddit.com/r/denver"}
+                    "button-action": "true"
                 }
             };
 
@@ -473,8 +486,8 @@ var survey = function(surveyJsonLink) {
 
             if (modalMessages[message].button) {
 
-                if (modalMessages[message]["button-action"]) {
-                    $("#modalButton").on('click', modalMessages[message]["button-action"])
+                if (modalMessages[message]["button-action"] && $("#submitButton").data("fwd-url")) {
+                    $("#modalButton").on('click', function(){window.location.href = $("#submitButton").data("fwd-url")});
                 }
 
                 $("#modalButton")
@@ -496,19 +509,6 @@ var survey = function(surveyJsonLink) {
                     "identifier": identifier,
                     "key": key,
                     "value": value
-                });
-            };
-
-            var submitList = function () {
-
-                // SUBMIT WINDOW SHOWS HERE //
-
-                /* Send the data using post */
-                var posting = $.post("submitSurvey.php", {answers: jsonList});
-
-                /* Put the results in a div */
-                posting.done(function() {
-                    // SUBMISSION COMPLETE WINDOW //
                 });
             };
 
@@ -560,7 +560,6 @@ var survey = function(surveyJsonLink) {
 
                     if (this.hasAttribute("data-required") && this.getAttribute("data-required") === "true") {
                         requiredKeys.push(this.id);
-                        console.log(this.id);
                     }
                 });
 
@@ -628,13 +627,13 @@ var customElement = function(elementType, attributes, content) {
     newElement.innerHTML = content ? content : "";
 
     // Add a universal outerHTML function
-    var customGetOuterHtml = function() {
+    var getOuterHTML = function() {
         var outerElement = document.createElement("div");
         outerElement.appendChild(newElement);
         return outerElement.innerHTML;
     };
 
-    newElement.customGetOuterHtml = customGetOuterHtml;
+    newElement.customGetOuterHtml = getOuterHTML;
 
     return newElement;
 };

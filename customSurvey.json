@@ -1,10 +1,17 @@
 {
     "title": "/r/Denver Survey",
+    "exitUrl": "http://www.reddit.com/r/denver",
     "survey" :
     [
         {
             "name": "location",
             "question": "Click your location on the map",
+            "input": "map",
+            "required": false
+        },
+        {
+            "name": "location2",
+            "question": "Click your location on the map2",
             "input": "map",
             "required": false
         },
