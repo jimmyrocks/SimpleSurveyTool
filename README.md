@@ -21,6 +21,7 @@ Usage
 * rename **db_settings_example.php** to **db_settings.php** and change the username, password, and servername.
 * Once you have it downloaded, you'll want to change the customSurvey.json file.  Descriptions of each file and what they do can be found above.
 * Set up the database (see below)
+
 ```sql
 CREATE TABLE IF NOT EXISTS `simpleSurvey` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT,
