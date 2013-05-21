@@ -10,12 +10,6 @@
             "required": false
         },
         {
-            "name": "location2",
-            "question": "Click your location on the map2",
-            "input": "map",
-            "required": false
-        },
-        {
             "name": "username",
             "question": "What is your reddit username?",
             "input": "text",
