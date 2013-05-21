@@ -11,7 +11,13 @@
 }
 
 #footer {
-    height: 10px;
+    height: 35px;
+}
+#footer span {
+    position: relative;
+    top: 8px;
+    font-size: 11px;
+    left: 10px;
 }
 
 .required {
