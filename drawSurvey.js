@@ -546,9 +546,7 @@ var survey = function(surveyJsonLink) {
                 if (identifier.length < 1) {
                     identifier = "anonymous_" + (Math.floor((Math.random()*100000)+1));
                 }
-            console.log(identifier + "_001");
             if (identifier.length > 0) {
-                console.log(identifier + "_002");
                 // Get all the selected buttons
                 $(".btn.active").each(function() {
                     currentList.append(identifier, this.id, this.textContent);
@@ -587,6 +585,7 @@ var survey = function(surveyJsonLink) {
 
                     /* Send the data using post */
                     var posting = $.post("submitSurvey.php", {answers: currentList.show()});
+                    console.log(currentList.show());
 
                     /* Put the results in a div */
                     posting.done(function() {
