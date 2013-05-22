@@ -588,7 +588,8 @@ var survey = function(surveyJsonLink) {
                     console.log(currentList.show());
 
                     /* Put the results in a div */
-                    posting.done(function() {
+                    posting.done(function(d) {
+                        console.log(d);
                         showModalWindow("completed");
                     });
                 }
