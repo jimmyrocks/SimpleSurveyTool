@@ -11,7 +11,7 @@
         },
         {
             "name": "username",
-            "question": "What is your reddit username?",
+            "question": "What is your reddit username? (This is optional)",
             "input": "text",
             "placeholder": "",
             "required": false
