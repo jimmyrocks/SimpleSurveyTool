@@ -589,7 +589,9 @@ var survey = function(surveyJsonLink) {
 
                     /* Put the results in a div */
                     posting.done(function(d) {
+                        console.log("-----");
                         console.log(d);
+                        console.log("=====");
                         showModalWindow("completed");
                     });
                 }
