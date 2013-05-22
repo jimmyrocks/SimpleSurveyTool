@@ -543,7 +543,10 @@ var survey = function(surveyJsonLink) {
 
             // Make sure the user enters all required fields
             var identifier = $(identifierDiv).val();
-            if (identifierDiv.length > 0) {
+                if (identifier.length < 1) {
+                    identifier = "anonymous_" + (Math.floor((Math.random()*100000)+1));
+                }
+            if (identifier.length > 0) {
                 // Get all the selected buttons
                 $(".btn.active").each(function() {
                     currentList.append(identifier, this.id, this.textContent);
