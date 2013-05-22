@@ -46,7 +46,7 @@
             "question": "What city or town do you current live in?",
             "input": "text",
             "placeholder": "",
-            "required": false
+            "required": true
         },
         {
             "name": "age",
