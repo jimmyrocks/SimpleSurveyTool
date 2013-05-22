@@ -14,7 +14,7 @@
             "question": "What is your reddit username?",
             "input": "text",
             "placeholder": "",
-            "required": true
+            "required": false
         },{
             "name": "Gender",
             "question": "What gender are you?",
@@ -45,7 +45,8 @@
             "name": "city/town",
             "question": "What city or town do you current live in?",
             "input": "text",
-            "placeholder": ""
+            "placeholder": "",
+            "required": false
         },
         {
             "name": "age",
