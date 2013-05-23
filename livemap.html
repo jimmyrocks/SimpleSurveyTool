@@ -240,9 +240,10 @@ var baseMaps = {
             })
 };
 
+$.getJSON("./denver_neighborhoods.json", function(denverNeighborhoods) {
 $.getJSON("./readDatabase.php", function(heatedData) {
     var heatmapLayer = L.TileLayer.heatMap({
-        radius: 20,
+        radius: 30,
         opacity: 0.8,
         gradient: {
             0.45: "rgb(0,0,255)",
@@ -255,8 +256,18 @@ $.getJSON("./readDatabase.php", function(heatedData) {
     });
     heatmapLayer.addData(heatedData["points"]);
 
+    console.log(denverNeighborhoods);
+    // Denver Hoods
+    var hoods = L.geoJson(denverNeighborhoods, {
+        style: function (feature) {
+            return feature.properties && feature.properties.style;
+        }
+    });
+
+
     var overlayMaps = {
-        'Heatmap': heatmapLayer
+        'Heatmap': heatmapLayer,
+        'Denver Neighborhoods': hoods
     };
 
     g = $("#" + mapDiv).data("mapVar");
@@ -264,6 +275,7 @@ $.getJSON("./readDatabase.php", function(heatedData) {
     heatmapLayer.addTo(g);
     g.options["maxZoom"] = 12;
     $("#modalButton").click();
+});
 });
 
 var loadMap = function(mapVar, position) {
