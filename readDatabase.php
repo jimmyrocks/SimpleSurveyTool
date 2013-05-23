@@ -15,8 +15,8 @@ if (mysqli_connect_errno($con))
 else {
 
     $SQL = "SELECT
- B.answer + ((rand()-rand())/100) as lat,
- C.answer + ((rand()-rand())/100) as lon
+ B.answer + ((rand()-rand())/50) as lat,
+ C.answer + ((rand()-rand())/50) as lon
 FROM
  simpleSurvey A JOIN
  (SELECT BA.username, BA.answer from `simpleSurvey` BA where BA.question = 'location_lat' and BA.answer is not null) B ON A.username = B.username JOIN
