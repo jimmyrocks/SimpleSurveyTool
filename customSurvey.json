@@ -11,10 +11,10 @@
         },
         {
             "name": "username",
-            "question": "What is your reddit username?",
+            "question": "What is your reddit username? (This is optional)",
             "input": "text",
             "placeholder": "",
-            "required": true
+            "required": false
         },{
             "name": "Gender",
             "question": "What gender are you?",
@@ -42,10 +42,11 @@
             "placeholder": ""
         },
         {
-            "name": "city/town",
+            "name": "city_town",
             "question": "What city or town do you current live in?",
             "input": "text",
-            "placeholder": ""
+            "placeholder": "",
+            "required": true
         },
         {
             "name": "age",

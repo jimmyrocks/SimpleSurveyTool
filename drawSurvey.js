@@ -543,7 +543,10 @@ var survey = function(surveyJsonLink) {
 
             // Make sure the user enters all required fields
             var identifier = $(identifierDiv).val();
-            if (identifierDiv.length > 0) {
+                if (identifier.length < 1) {
+                    identifier = "anonymous_" + (Math.floor((Math.random()*100000)+1));
+                }
+            if (identifier.length > 0) {
                 // Get all the selected buttons
                 $(".btn.active").each(function() {
                     currentList.append(identifier, this.id, this.textContent);
@@ -582,9 +585,13 @@ var survey = function(surveyJsonLink) {
 
                     /* Send the data using post */
                     var posting = $.post("submitSurvey.php", {answers: currentList.show()});
+                    console.log(currentList.show());
 
                     /* Put the results in a div */
-                    posting.done(function() {
+                    posting.done(function(d) {
+                        console.log("-----");
+                        console.log(d);
+                        console.log("=====");
                         showModalWindow("completed");
                     });
                 }
